@@ -1,12 +1,14 @@
 VERILATE := verilator
-VERILATE_FLAGS := --binary --trace-fst
+VERILATE_FLAGS := -Wno-WIDTHEXPAND -Wno-WIDTHTRUNC --binary --trace-fst --trace-structs --trace-params --timescale 1ns/100ps --coverage --build-jobs 8
 
-COPIER_SRC := src/memory_if.sv src/memory.sv src/flex_counter.sv src/data_register.sv src/copier.sv
+.PHONY: clean
 
-copier: $(COPIER_SRC) tb/tb_copier.sv
-	$(VERILATE) $(VERILATE_FLAGS) --top-module tb_copier $^
-	cp obj_dir/Vtb_copier
+stack: src/stack.sv tb/tb_stack.sv
+	$(VERILATE) $(VERILATE_FLAGS) src/stack.sv tb/tb_stack.sv
 
 clean:
 	rm -rf obj_dir
-	rm -f Vtb_copier
+	rm -rf cov
+	rm -f *.fst
+	rm -f coverage.dat
+	rm -f coverage.fst
