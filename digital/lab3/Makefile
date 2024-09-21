@@ -3,6 +3,9 @@ VERILATE_FLAGS := -Wno-WIDTHEXPAND -Wno-WIDTHTRUNC --binary --trace-fst --trace-
 
 .PHONY: clean
 
+mul: src/mul.sv tb/tb_mul.sv
+	$(VERILATE) $(VERILATE_FLAGS) src/mul.sv tb/tb_mul.sv
+
 stack: src/stack.sv tb/tb_stack.sv
 	$(VERILATE) $(VERILATE_FLAGS) src/stack.sv tb/tb_stack.sv
 
@@ -12,3 +15,4 @@ clean:
 	rm -f *.fst
 	rm -f coverage.dat
 	rm -f coverage.fst
+	rm -rf html
