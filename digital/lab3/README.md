@@ -2,36 +2,42 @@
 
 ## Contents
 1. [Before you start](#before-you-start)
+2. [Evaluating PPA](#evaluating-ppa)
 2. [Memory Copier](#memory-copier)
 
 ## Before you start
 
-### SystemVerilog Interfaces
-Interfaces in SystemVerilog are used to create logical "bundles" of signals, and specify their input/output relationship with respect to what devices are being connected. Interfaces have 2 major parts: signal declarations, and *modports*. The modports decide the orientation of the wires for each module that connects to the interface. You can read more about them at [ASIC World](http://www.asic-world.com/systemverilog/interface.html). Here are a few reasons interfaces can be useful:
-1. Code reuse: many modules use similar or even standardize interfaces (e.g. AHB/APB components)
-2. Simplicity and brevity in code: instead of passing in many signals manually when connecting modules, you can pass in just the single interface.
-3. UVM testing uses "virtual interfaces" to access signals rather than loose signals.
+### Stacks
+A stack is an abstract data structure that implements a last-in, first-out queue. As the name suggests, you can understand a stack as objects being stacked on top of one another. For instance, plates in a restaurant: you place clean plates on top of the stack, and take plates from the top of the stack to serve food.
 
-As a simple example, consider the `memory_if` interface that will be used in the second part of the lab:
-```sv
-interface memory_if();
-    logic wen, ren;
-    logic ready;
-    logic [7:0] addr, rdata, wdata;
+A stack has 2 major operations: `push(A)`, which will *push* an item on top of the stack, and `pop()` which will take an item off the stop of the stack and return it. Additionally, stacks may offer the ability to *peek* at an object on the stack: see the value of it without popping the item off the stack.
 
-    modport request(
-        input ready, rdata,
-        output wen, ren, addr, wdata
-    );
+### Evaluating Mathematical Expressions with a Stacks and an FSM
+We can parse mathematical expressions such as $(1 + 2) * 3 / 4$ using a finite state machine controlling a stack. The input will arrive one symbol at a time, from left-to-right, and we will output [Reverse Polish Notation](): `2 1 + 3 * 4 /`. Ordering the operations like this will allow them to be easily evaluated. To evaluate an RPN expression, we can simply move left-to-right and aply the following two rules:
+1. When we get a number, push it on to a stack
+2. When we get an *operator*, pop the top values off the stack, apply the operation, and push the result onto the stack again
 
-    modport response(
-        input wen, ren, addr, wdata,
-        output ready, rdata
-    );
-endinterface
-```
+The following table walks through the above example. The 'Stack Result' shows the state of the stack after the action is taken. The top of the stack is to the right (and bolded).
 
-This interface defines communication between a requester (e.g. a CPU) and a responder (e.g. memory). The two modports match these roles, a requester would have the `request` modport, and the responder would have the `response` modport. The signals can be accessed using `.` syntax like a struct.
+| Input Symbol | Action | Stack Result |
+|:------------:|:-------|-------------:|
+| 2 | PUSH 2 | **2** |
+| 1 | PUSH 1 | 2 **1** |
+| + | A = POP; B = POP; PUSH A + B | **3** |
+| 3 | PUSH 3 | 3 **3** |
+| * | A = POP; B = POP; PUSH A * B | **9** |
+| 4 | PUSH 4 | 9 **4** |
+| / | A = POP; B = POP; PUSH A / B | 
+
+
+## Evaluating PPA
+In this part of the lab, you will evaluate (static) power, performance, and area using the OpenSTA tool. 
+
+
+### FIXME: Lab ideas
+1. Do some kind of pipelined computation. No hazards/control.
+2. Maybe parameterize pipeline depth, and see the power/performance/area of different configurations?
+3. 
 
 ## Memory Copier
 This lab will have you practice hierarchical design by integrating together a few submodules to create a larger module.

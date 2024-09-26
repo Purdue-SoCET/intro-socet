@@ -6,6 +6,9 @@ VERILATE_FLAGS := -Wno-WIDTHEXPAND -Wno-WIDTHTRUNC --binary --trace-fst --trace-
 mul: src/mul.sv tb/tb_mul.sv
 	$(VERILATE) $(VERILATE_FLAGS) src/mul.sv tb/tb_mul.sv
 
+div: src/div.sv tb/tb_div.sv
+	$(VERILATE) $(VERILATE_FLAGS) src/div.sv tb/tb_div.sv
+
 stack: src/stack.sv tb/tb_stack.sv
 	$(VERILATE) $(VERILATE_FLAGS) src/stack.sv tb/tb_stack.sv
 

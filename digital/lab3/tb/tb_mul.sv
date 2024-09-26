@@ -45,7 +45,7 @@ module tb_mul;
 
     initial begin
         $dumpfile("mul.fst");
-        $dumpvars(0, mul);
+        $dumpvars(0, tb_mul);
         start = 0;
         a = 0;
         b = 0;
