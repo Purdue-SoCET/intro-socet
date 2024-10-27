@@ -6,7 +6,7 @@
 #define FP_FRAC_SIZE 8
 #define FP_WHOL_SIZE 24
 
-// Q8.8 floating point value
+// Q24.8 floating point value
 typedef struct {
     uint32_t frac : 8;
     int32_t whol : 24;

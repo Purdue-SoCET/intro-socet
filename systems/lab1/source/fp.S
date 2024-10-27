@@ -1,7 +1,5 @@
 // fixed_point_t fp_add(fixed_point_t a, fixed_point_t b);
-// Takes in two fixed_point_t values (Q8.8) and returns their sum. Keep in mind
-// that RV32 registers are 32 bits wide, so you may need some adjustments to
-// ensure only 16 bits are used.
+// Takes in two fixed_point_t values (Q24.8) and returns their sum.
 //
 // For a refresher on this algorithm, here's an example from the manual
 // (remember that we don't need to convert between decimal and fixed
@@ -17,9 +15,7 @@ fp_add:
     ret
 
 // fixed_point_t fp_mul(fixed_point_t a, fixed_point_t b);
-// Takes in two fixed_point_t values (Q8.8) and returns their product. Keep in mind
-// that RV32 registers are 32 bits wide, so you may need some adjustments to
-// ensure only 16 bits are used.
+// Takes in two fixed_point_t values (Q24.8) and returns their product.
 //
 // For a refresher on this algorithm, here's an example from the manual
 // (remember that we don't need to convert between decimal and fixed
