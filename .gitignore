@@ -7,3 +7,4 @@
 **/*.bin
 **/syn/**
 **/syn_generic/**
+**/build/

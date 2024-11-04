@@ -25,6 +25,6 @@ void ifft(uint8_t pixel_buf[FFT_N][FFT_N]);
 void fft_to_pixels(uint8_t pixel_buf[FFT_N][FFT_N]);
 
 // Access to the fft'd/ifft'd data
-cplx fft_data[FFT_N][FFT_N];
+extern cplx fft_data[FFT_N][FFT_N];
 
 #endif

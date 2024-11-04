@@ -9,6 +9,8 @@
 // pretty computationally expensive.
 #define LOGSCALING 0
 
+cplx fft_data[FFT_N][FFT_N];
+
 fixed_point_t cplx_abs(cplx z) {
     fixed_point_t real = fp_mul(z.real, z.real);
     fixed_point_t imag = fp_mul(z.imag, z.imag);
@@ -49,7 +51,8 @@ void recursive_fft(cplx buf[], cplx out[], int step, bool inverse) {
             cplx z;
             z.real = fp_from_u32(cos_lookup[i / 2]);
             z.imag = fp_from_u32(-sin_lookup[i / 2]);
-            if (inverse) z.imag = fp_from_u32(~i32_from_fp(z.imag) + 1);
+            if (inverse)
+                z.imag = fp_from_u32(~i32_from_fp(z.imag) + 1);
             cplx t = cplx_mul(z, out[i + step]);
             buf[i / 2] = cplx_add(out[i], t);
             buf[(i + FFT_N) / 2] = cplx_sub(out[i], t);

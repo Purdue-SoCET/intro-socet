@@ -1,18 +1,23 @@
+#include "ff.h"
 #include "image.h"
 
 image_t image_read(const char *path) {
     image_t image;
-    FILE *fp = fopen(path, "r");
+    FIL fp;
+    f_open(&fp, path, 'r');
     // Assume that its a valid 64x64 pgm, max value of 255
-    fseek(fp, 13, SEEK_CUR);
-    fread(image.pixels, 1, FFT_N * FFT_N, fp);
+    f_lseek(&fp, 13);
+    UINT nread;
+    f_read(&fp, image.pixels, FFT_N * FFT_N, &nread);
     return image;
 }
 
 void image_write(image_t *image, const char *path) {
-    FILE *fp = fopen(path, "w");
-    fwrite("P5\n64 64\n255\n", 1, 13, fp);
-    fwrite(image->pixels, 1, FFT_N * FFT_N, fp);
+    FIL fp;
+    f_open(&fp, path, 'w');
+    UINT nwrite;
+    f_write(&fp, "P5\n64 64\n255\n", 13, &nwrite);
+    f_write(&fp, image->pixels, FFT_N * FFT_N, &nwrite);
 }
 
 uint8_t **image_buf(image_t *image) {
