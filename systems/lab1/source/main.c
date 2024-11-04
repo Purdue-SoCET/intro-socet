@@ -1,8 +1,8 @@
 #include "fft.h"
 #include "filter.h"
+#include "format.h"
 #include "image.h"
 #include <math.h>
-#include <stdio.h>
 
 cplx high_pass(uint32_t x, uint32_t y, cplx curr) {
     int32_t center = -32;

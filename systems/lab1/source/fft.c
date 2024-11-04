@@ -9,7 +9,7 @@
 // pretty computationally expensive.
 #define LOGSCALING 0
 
-cplx fft_data[FFT_N][FFT_N];
+__attribute__((section(".noinit"))) cplx fft_data[FFT_N][FFT_N];
 
 fixed_point_t cplx_abs(cplx z) {
     fixed_point_t real = fp_mul(z.real, z.real);
@@ -38,7 +38,7 @@ cplx cplx_div(cplx a, uint32_t b) {
 
 // Temporary storage that can be used by fft functions in order to reduce stack sizes. Can be
 // clobbered across fft/ifft calls
-cplx temp[FFT_N][FFT_N];
+__attribute__((section(".noinit"))) cplx temp[FFT_N][FFT_N];
 
 // TODO:
 // remove fp usage, use fixed point

@@ -66,7 +66,7 @@ set_property(TARGET intro-socet PROPERTY C_STANDARD 11)
 add_custom_command(
     TARGET intro-socet
     POST_BUILD
-    COMMAND riscv64-unknown-elf-objcopy -O binary intro-socet intro-socet.bin
+    COMMAND riscv64-unknown-elf-objcopy -O binary intro-socet meminit.bin
     COMMAND riscv64-unknown-elf-objdump -d intro-socet > intro-socet.dump
     COMMENT "Generating binary file and objdump"
 )
