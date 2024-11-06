@@ -55,11 +55,11 @@ fixed_point_t fp_div_scalar(fixed_point_t a, uint32_t b) {
 
 fixed_point_t fp_sqrt(fixed_point_t a) {
     uint32_t x = 1 << FP_FRAC_SIZE;
-    uint32_t a_casted = (uint64_t)u32_from_fp(a) << FP_FRAC_SIZE;
+    uint64_t a_casted = (uint64_t)u32_from_fp(a) << FP_FRAC_SIZE;
     while (1) {
-        uint32_t x_old = x;
+        uint64_t x_old = x;
         x = (x + a_casted / x) / 2;
-        if ((x - x_old) <= 1)
+        if ((x - x_old == 1) || (x_old - x == 1) || x_old == x)
             break;
     }
     fixed_point_t res = fp_from_u32(x & 0xffffffff);

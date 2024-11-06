@@ -1,8 +1,8 @@
+#include "ff.h"
 #include "fft.h"
 #include "filter.h"
 #include "format.h"
 #include "image.h"
-#include <math.h>
 
 cplx high_pass(uint32_t x, uint32_t y, cplx curr) {
     int32_t center = -32;
@@ -21,17 +21,29 @@ cplx high_pass(uint32_t x, uint32_t y, cplx curr) {
 }
 
 int main(void) {
-    image_t image = image_read("../images/cat.pgm");
+    FATFS fs;
+    f_mount(&fs, "", 0);
+
+    print("Starting image processing!\n");
+    image_t image = image_read("0:CAT.PGM");
+    print("Read in image!\n");
     fft(image.pixels);
-    image_write(&image, "fft.pgm");
+    print("Calculated FFT\n");
+    image_write(&image, "0:FFT.PGM");
+    print("Wrote FFT'd data!\n");
     // TODO: ideas for examples
     // 1. Create low pass filter
     // 2. Create high pass filter
-    // apply_filter(high_pass);
-    // fft_to_pixels(image.pixels);
-    // image_write(&image, "high_pass.pgm");
+    apply_filter(high_pass);
+    print("Applied high pass filter!\n");
+    fft_to_pixels(image.pixels);
+    image_write(&image, "0:HIGHPASS.PGM");
     // 3. Create bandpass pass filter
     ifft(image.pixels);
-    image_write(&image, "ifft.pgm");
+    print("Calculated iFFT\n");
+    image_write(&image, "0:IFFT.PGM");
+    print("Wrote image back!\n");
+
+    f_unmount("");
     return 0;
 }

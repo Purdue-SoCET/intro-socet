@@ -1,4 +1,4 @@
 [submodule "systems/lab1/aft-femtokernel"]
 	path = systems/lab1/aft-femtokernel
 	url = git@github.com:Purdue-SoCET/aft-femtokernel.git
-    branch = fs-integration
+    branch = intro-systems1

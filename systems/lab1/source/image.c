@@ -1,14 +1,16 @@
+#include "diskio.h"
 #include "ff.h"
 #include "image.h"
 
 image_t image_read(const char *path) {
     image_t image;
     FIL fp;
-    f_open(&fp, path, 'r');
+    f_open(&fp, path, FA_READ);
     // Assume that its a valid 64x64 pgm, max value of 255
     f_lseek(&fp, 13);
     UINT nread;
     f_read(&fp, image.pixels, FFT_N * FFT_N, &nread);
+    f_close(&fp);
     return image;
 }
 
