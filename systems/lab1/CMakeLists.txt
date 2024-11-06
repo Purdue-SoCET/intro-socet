@@ -39,7 +39,8 @@ set(SRCS
     source/fft.c
     source/filter.c
     source/image.c
-    source/fp.c)
+    source/fp.c
+    source/fp.S)
 set(FEMTOKERNEL_SRCS
     aft-femtokernel/arch/aftx07/boot.S
     aft-femtokernel/kernel/alloc.c

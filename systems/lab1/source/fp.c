@@ -18,26 +18,10 @@ uint32_t u32_from_fp(fixed_point_t a) {
     return whol << 8 | frac;
 }
 
-fixed_point_t fp_add(fixed_point_t a, fixed_point_t b) {
-    int32_t a_casted = i32_from_fp(a);
-    int32_t b_casted = i32_from_fp(b);
-    return fp_from_u32(a_casted + b_casted);
-}
-
 fixed_point_t fp_sub(fixed_point_t a, fixed_point_t b) {
     int32_t a_casted = i32_from_fp(a);
     int32_t b_casted = i32_from_fp(b);
     return fp_from_u32(a_casted - b_casted);
-}
-
-fixed_point_t fp_mul(fixed_point_t a, fixed_point_t b) {
-    int32_t a_casted = i32_from_fp(a);
-    int32_t b_casted = i32_from_fp(b);
-    int64_t c = ((int32_t)a_casted * (int32_t)b_casted) >> 8;
-    int64_t d = ((int32_t)a_casted * (int32_t)b_casted) >> 7;
-    int64_t adjustment = d & 0x1;
-    int64_t corrected = c + adjustment;
-    return fp_from_u32(corrected & 0xFFFFFFFF);
 }
 
 fixed_point_t fp_div(fixed_point_t a, fixed_point_t b) {

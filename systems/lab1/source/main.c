@@ -38,6 +38,7 @@ int main(void) {
     print("Applied high pass filter!\n");
     fft_to_pixels(image.pixels);
     image_write(&image, "0:HIGHPASS.PGM");
+    print("Wrote high pass fft!\n");
     // 3. Create bandpass pass filter
     ifft(image.pixels);
     print("Calculated iFFT\n");

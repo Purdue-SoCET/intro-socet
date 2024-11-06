@@ -15,9 +15,9 @@ typedef struct {
 fixed_point_t fp_from_u32(uint32_t a);
 int32_t i32_from_fp(fixed_point_t a);
 uint32_t u32_from_fp(fixed_point_t a);
-fixed_point_t fp_add(fixed_point_t a, fixed_point_t b);
+extern fixed_point_t fp_add(fixed_point_t a, fixed_point_t b);
 fixed_point_t fp_sub(fixed_point_t a, fixed_point_t b);
-fixed_point_t fp_mul(fixed_point_t a, fixed_point_t b);
+extern fixed_point_t fp_mul(fixed_point_t a, fixed_point_t b);
 fixed_point_t fp_div(fixed_point_t a, fixed_point_t b);
 fixed_point_t fp_div_scalar(fixed_point_t a, uint32_t b);
 fixed_point_t fp_sqrt(fixed_point_t a);

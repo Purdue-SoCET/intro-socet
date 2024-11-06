@@ -16,10 +16,11 @@ image_t image_read(const char *path) {
 
 void image_write(image_t *image, const char *path) {
     FIL fp;
-    f_open(&fp, path, 'w');
+    f_open(&fp, path, FA_CREATE_ALWAYS | FA_WRITE);
     UINT nwrite;
     f_write(&fp, "P5\n64 64\n255\n", 13, &nwrite);
     f_write(&fp, image->pixels, FFT_N * FFT_N, &nwrite);
+    f_close(&fp);
 }
 
 uint8_t **image_buf(image_t *image) {
