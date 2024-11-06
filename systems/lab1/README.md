@@ -21,6 +21,14 @@ PROCESSING CODE IS PROVIDED). For a basic overview of image processing, please
 read the [document about the Fourier Transform](docs/ft.md) for a conceptual
 grounding on what you'll be doing in this lab.
 
+---
+**NOTE**
+
+Make sure you pull all submodules by running `git submodule update --init
+--remote --recursive`.
+
+---
+
 ### Basics of RISC-V
 RISC-V is an open standard for an instruction set architecture (ISA). RISC-V
 has 32 general-purpose registers, and register 0 (x0, zero) is hard-wired to 0.
@@ -284,13 +292,14 @@ arithmetic right shifted by 1 would result in 0b00.
 To get started, clone the AFT-dev repository and follow its build instructions.
 If your account is set up properly, this should be as simple as:
 
-1. Set up the Python virtual environment according to the README.md
-2. Run `setup.sh` to download the needed libraries and submodules
-3. Run `build.sh` to build the Verilator simulation
-4. Run `./aft_out/sim-verilator/Vaftx07` to run the simulation. Note that the
-   simulation needs a file named `meminit.bin` in the current working
-   directory. If you don't provide that, it will just run forever doing
-   nothing, since the RAM is full of 0s.
+1. Switch to the `mmio_disk` branch which adds support for filesystems using `git checkout mmio_disk`
+2. Set up the Python virtual environment according to the README.md
+3. Run `setup.sh` to download the needed libraries and submodules
+4. Run `build.sh` to build the Verilator simulation
+5. Run `./aft_out/socet_aft_aftx07_0.4.0/sim-verilator/Vaftx07` to run the
+   simulation. Note that the simulation needs a file named `meminit.bin` in the
+   current working directory. If you don't provide that, it will just run
+   forever doing nothing, since the RAM is full of 0s.
 
 There are many software tests you can run by navigating to the `sw-tests`
 directory, building them with CMake, and copying the resulting `.bin` files
@@ -321,12 +330,10 @@ Let's write a small python script to generate a header which will contain the ta
    file, writes sine lookup values, writes the middle section, writes the
    cosine lookup values, and then writes the footer. The output file can now be
    included like any other header file.
-3. Fill in lines 35 and 41 where val is supposed to be equal to $\frac{\pi}{n}k$.
-4. Fill in lines 36 and 42 to take the sine and cosine of val
-4. Fill in lines 37 and 43 to convert the sine or cosine value to Q8.8 fixed
-   point by multiplying by 1 << 8. Don't forget to cast this to an int!
-5. Run the script to generate the lookup table header by running `python3
-   scripts/generate_lookups.py`.
+3. Fill in lines 41 and 47 where val is supposed to be equal to $\frac{\pi}{n}k$.
+4. Fill in lines 42 and 48 to take the sine and cosine of val
+4. Fill in lines 43 and 49 to convert the sine or cosine value to Q24.8 fixed point by multiplying by 1 << 8. Don't forget to cast this to an int!
+5. Run the script to generate the lookup table header by running `python3 scripts/generate_lookups.py`.
 
 [//]: # (TODO: fix up line numbers to be accurate to what's actually there)
 
@@ -342,7 +349,15 @@ to follow the C ABI!
 1. Fill in the `fp_add` procedure in "source/fp.S"
 2. Fill in the `fp_mul` procedure in "source/fp.S"
 3. Compile the project using CMake
-4. Run the binary using AFT-dev and inspect the output images.
+  - Run `mkdir build && cd build` to create a directory for the build files and enter it
+  - Run `cmake3 ..` to generate build files using the CMake build system
+  - Run `make` to compile your program
+  - Run `../scripts/generate_fs.sh` to generate the file system image for the project
+4. Run the binary using AFT-dev
+5. Dump the resulting file system and inspect the images:
+  - Run `../scripts/dump_fs.sh` to dump the images from the file system image to the local directory
+  - Run `dolphin .` to open a file explorer in the current directory
+  - Double click on each PGM image to see it
 
 ```asm
 .global fp_add

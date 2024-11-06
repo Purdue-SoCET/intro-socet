@@ -33,26 +33,21 @@ def s32(value):
     else:
         return int(value)
 
-
 def main():
     out_file = "source/lookup.h"
     with open(out_file, "w") as f:
         f.write(header)
         for i in range(0, n, 2):
-            # val = # TODO
-            # sin_value = # TODO
-            # sin_fp = # TODO
-            # f.write(f'    {sin_fp},\n')
-            d = float(i) * math.pi / n
-            f.write(f'    0x{s32(math.sin(d) * (1<<8)):x},\n')
+            val = # TODO
+            sin_value = # TODO
+            sin_fp = # TODO
+            f.write(f'    0x{sin_fp:x},\n')
         f.write(midder)
         for i in range(0, n, 2):
-            # val = # TODO
-            # cos_value = # TODO
-            # cos_fp = # TODO
-            # f.write(f'    {cos_fp},\n')
-            d = float(i) * math.pi / n
-            f.write(f'    0x{s32(math.cos(d) * (1<<8)):x},\n')
+            val = # TODO
+            cos_value = # TODO
+            cos_fp = # TODO
+            f.write(f'    0x{cos_fp:x},\n')
         f.write(footer)
         f.flush()
 
