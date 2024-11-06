@@ -31,19 +31,24 @@ int main(void) {
     print("Calculated FFT\n");
     image_write(&image, "0:FFT.PGM");
     print("Wrote FFT'd data!\n");
-    // TODO: ideas for examples
-    // 1. Create low pass filter
-    // 2. Create high pass filter
-    apply_filter(high_pass);
-    print("Applied high pass filter!\n");
-    fft_to_pixels(image.pixels);
-    image_write(&image, "0:HIGHPASS.PGM");
-    print("Wrote high pass fft!\n");
-    // 3. Create bandpass pass filter
     ifft(image.pixels);
     print("Calculated iFFT\n");
     image_write(&image, "0:IFFT.PGM");
     print("Wrote image back!\n");
+    // TODO: ideas for examples
+    // 1. Create low pass filter
+    // 2. Create high pass filter
+    fft(image.pixels);
+    apply_filter(high_pass);
+    print("Applied high pass filter!\n");
+    fft_to_pixels(image.pixels);
+    image_write(&image, "0:HP.PGM");
+    print("Wrote high pass fft!\n");
+    ifft(image.pixels);
+    print("Calculated high pass iFFT\n");
+    image_write(&image, "0:HPIFFT.PGM");
+    print("Wrote high pass image back!\n");
+    // 3. Create bandpass pass filter
 
     f_unmount("");
     return 0;

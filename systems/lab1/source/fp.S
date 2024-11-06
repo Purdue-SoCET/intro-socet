@@ -11,7 +11,7 @@
 // 0                    | Conversion to decimal
 .global fp_add
 fp_add:
-    add a0, a0, a1
+    # TODO
     ret
 
 // fixed_point_t fp_mul(fixed_point_t a, fixed_point_t b);
@@ -34,9 +34,5 @@ fp_add:
 // 10 | -0.5                      | Conversion to decimal
 .global fp_mul
 fp_mul:
-    mul t0, a0, a1
-    srai t1, t0, 8
-    srai t2, t0, 7
-    andi t2, t2, 1
-    add a0, t1, t2
+    # TODO
     ret

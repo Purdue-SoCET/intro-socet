@@ -67,89 +67,6 @@ For the full details, see the [RISC-V UABI
 Documents](https://github.com/riscv-non-isa/riscv-elf-psabi-doc/blob/master/riscv-abi.adoc),
 specifically the "calling convention" document.
 
-### Interrupts and Exceptions
-An interrupt is a hardware-initiated transfer of control that is usually
-*asychronous*; that is, it can happen at any time, and the currently-executing
-application has no knowledge of when an interrupt will occur. When an interrupt
-occurs, the CPU will jump to a pre-defined address (an *interrupt vector*),
-save the PC of the location where it was when the interrupt happened (i.e.
-where to return to after the interrupt handler is done) based on the condition
-that caused it, and begin executing code here (the *interrupt handler*). 
-
-Interrupts can be caused by various hardware peripherals, and in some
-architectures (RISC-V included) by a CPU directly. For example, things like:
-- A hardware timer running out
-- A CPU core interrupting another CPU core
-- An external peripheral (e.g. USB) completing an action
-
-In RISC-V, interrupt handling is split between the CPU and the *interrupt
-controller*, a dedicated piece of hardware that manages interrupts and notifies
-the CPU of interrupt conditions.
-
-> Note: An *exception* is similar to an interrupt, only it is *synchronous*
-> with the executing application. An exception is typically due to an error
-> condition with the running program, such as a program attempting to access
-> a bad memory location (segfault), executing an illegal instruction, a page
-> fault, or even a *syscall*. Exceptions are handled in the same way as
-> interrupts in RISC-V and many other ISAs.
-
-On the CPU side, there are a number of *Control & Status Registers* (CSRs) that
-govern interrupt handling. Here is a subset of these registers:
-- `mtvec`: Holds the base address of the interrupt *vector table*
-- `mstatus.mie`: Holds control bits for many CPU functions. The `mie` bit determines whether interrupts are enabled/disabled globally.
-- `mie`: Has a bit per interrupt source, that determines whether the specific interrupt is enabled or not. This is useful for filtering out sources of interrupts that you are not interested in. 
-- `mip`: A bit per interrupt source, indicates that an interrupt is *pending*, e.g. the condition has occurred but has not been acknowledged
-- `mepc`: The address you were executing at before the interrupt happened. This is where the CPU will return to when you exit the interrupt handler
-- `mcause`: A unique value that tells you what caused the interrupt
-
-To set up interrupts on a RISC-V CPU, you must set up `mtvec`, `mie`, and
-`mstatus.mie`. We won't go over the exact process in detail, but if you're
-interested, take a look at the code in `sw-tests/support`, which sets up
-interrupts.
-> Note: Exceptions are always active (they do not require an enable bit). This
-> is because most exceptions indicate an error condition that must be dealt
-> with, such as an attempt to access a protected memory range, or executing an
-> illegal instruction.
-
-### RISC-V privilege basics 
-
-The '`m`' prefix on these registers indicates the *privilege level* of the CPU.
-Machine ("M")-mode is the highest privilege, where firmware like a BIOS would
-run, and gives full access to the hardware. RISC-V also supports 2 more basic
-modes: Supervisor ("S") mode has less privilege than M-Mode, and is typically
-where a desktop OS kernel would run. S-mode comes with its own set of CSRs,
-most notably CSRs that control *virtual memory*. User "U"-mode is where
-applications can run and has the least privilege.
-
-The privilege mode controls what instructions can be run by the executing code,
-which CSRs can be accessed, and even which memory regions can be accessed. For
-example, an application running in U-mode cannot alter the `mtvec` register to
-redirect interrupts to a new location: only M-mode software can do this,
-providing a level of security from malicious (or poorly-written) applications.
-
-The privilege mode can be escalated using the `ecall` instruction, which causes
-a *synchronous* exception that goes to the next-highest mode. Symmetrically,
-each privilege mode (besides "U") has a special instruction `xret`, where `x`
-is the current mode (e.g. `mret` for M-mode) that lowers the privilege back to
-what it was before the last interrupt/exception and resumes the application at
-the address in the corresponding `xepc` register.
-> It might seem strange that an instruction can escalate privilege mode; after
-> all, if you can just upgrade your privilege, what is being protected?
->
-> However, because `ecall` causes an *exception*, program control is
-> transferred to an exception handler owned by software running in the
-> next-higher privilege mode (e.g. OS, hypervisor, firmware); that is, the
-> attacker can escalate the privilege mdoe, but cannot choose which code runs,
-> and therefore cannot access any protected resource without permission from
-> the OS.
-
-For example, consider an application running in U-mode, and an OS running in
-S-mode. If the application requires access to a particular resource (e.g. more
-memory), it must use a *syscall*, which would be implemented by loading some
-arguments into the registers, then using `ecall` to enter the OS in S-mode.
-After doing the requested work, the OS will use the `sret` instruction to
-resume the application in U-mode.
-
 ### Fixed Point
 
 [//]: # (TODO: talk about need for decimal representations of things, floating point is too complex for many embedded systems)
@@ -292,24 +209,26 @@ arithmetic right shifted by 1 would result in 0b00.
 To get started, clone the AFT-dev repository and follow its build instructions.
 If your account is set up properly, this should be as simple as:
 
-1. Switch to the `mmio_disk` branch which adds support for filesystems using `git checkout mmio_disk`
+1. Run `git checkout mmio_disk` to switch to the `mmio_disk` branch which adds support for filesystems
 2. Set up the Python virtual environment according to the README.md
 3. Run `setup.sh` to download the needed libraries and submodules
 4. Run `build.sh` to build the Verilator simulation
 5. Run `./aft_out/socet_aft_aftx07_0.4.0/sim-verilator/Vaftx07` to run the
-   simulation. Note that the simulation needs a file named `meminit.bin` in the
-   current working directory. If you don't provide that, it will just run
-   forever doing nothing, since the RAM is full of 0s.
+   simulator. This will simulate our RISC-V SoC and run the binary program from
+   "./meminit.bin". This runs RISC-V machine code which is different from your
+   host machine! It will dump the contents of memory to "./memsim.hex" at exit.
 
 There are many software tests you can run by navigating to the `sw-tests`
 directory, building them with CMake, and copying the resulting `.bin` files
 to the proper location. The steps to build something with CMake are shown below:
 
-1. Navigate to the directory with the CMakeLists.txt file (this is the build
-   script for CMake projects)
+1. Run `cd sw-tests` to navigate to the directory with the CMakeLists.txt file
+   (this is the build script for CMake projects)
 2. Create and enter a build directory: `mkdir build && cd build`
 3. Run CMake to generate the build files: `cmake3 ..`
 4. Run the generated Makefile to build the project: `make`
+5. Copy a ".bin" file to "meminit.bin": for example, `cp print_test.bin meminit.bin`
+6. Run the simulator by running `../../aft_out/socet_aft_aftx07_0.4.0/sim-verilator/Vaftx07`
 
 ### 2. Lookup Table Generation
 
