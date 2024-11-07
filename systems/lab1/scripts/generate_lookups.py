@@ -37,13 +37,13 @@ def main():
     out_file = "source/lookup.h"
     with open(out_file, "w") as f:
         f.write(header)
-        for i in range(0, n, 2):
+        for k in range(0, n, 2):
             val = # TODO
             sin_value = # TODO
             sin_fp = # TODO
             f.write(f'    0x{sin_fp:x},\n')
         f.write(midder)
-        for i in range(0, n, 2):
+        for k in range(0, n, 2):
             val = # TODO
             cos_value = # TODO
             cos_fp = # TODO
