@@ -20,6 +20,8 @@ cplx high_pass(uint32_t x, uint32_t y, cplx curr) {
     return z;
 }
 
+__attribute__((section(".noinit"))) cplx fftd_data[FFT_N][FFT_N];
+
 int main(void) {
     FATFS fs;
     f_mount(&fs, "", 0);
@@ -27,10 +29,17 @@ int main(void) {
     print("Starting image processing!\n");
     image_t image = image_read("0:CAT.PGM");
     print("Read in image!\n");
+    print("Calculating FFT...\n");
     fft(image.pixels);
+    for (int i = 0; i < FFT_N; i++) {
+        for (int j = 0; j < FFT_N; j++) {
+            fftd_data[i][j] = fft_data[i][j];
+        }
+    }
     print("Calculated FFT\n");
     image_write(&image, "0:FFT.PGM");
     print("Wrote FFT'd data!\n");
+    print("Calculating iFFT...\n");
     ifft(image.pixels);
     print("Calculated iFFT\n");
     image_write(&image, "0:IFFT.PGM");
@@ -38,12 +47,18 @@ int main(void) {
     // TODO: ideas for examples
     // 1. Create low pass filter
     // 2. Create high pass filter
-    fft(image.pixels);
+    for (int i = 0; i < FFT_N; i++) {
+        for (int j = 0; j < FFT_N; j++) {
+            fft_data[i][j] = fftd_data[i][j];
+        }
+    }
+    print("Applying filter...\n");
     apply_filter(high_pass);
-    print("Applied high pass filter!\n");
     fft_to_pixels(image.pixels);
+    print("Applied high pass filter!\n");
     image_write(&image, "0:HP.PGM");
-    print("Wrote high pass fft!\n");
+    print("Wrote high pass FFT!\n");
+    print("Calculating iFFT...\n");
     ifft(image.pixels);
     print("Calculated high pass iFFT\n");
     image_write(&image, "0:HPIFFT.PGM");

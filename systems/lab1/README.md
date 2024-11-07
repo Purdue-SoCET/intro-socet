@@ -269,7 +269,7 @@ to follow the C ABI!
   - Run `cmake3 ..` to generate build files using the CMake build system
   - Run `make test-fp-add` to compile the test
   - Run `riscv64-unknown-elf-objcopy -O binary test-fp-add meminit.bin` to dump the ELF file to a raw binary file (if you ever need to recompile your code, run the previous command and this command again!)
-  - Run `<AFT-dev root>/aft_out/socet_aft_aftx07_0.4.0/sim-verilator/Vaftx07` to run the simulator
+  - Run `<AFT-dev root>/aft_out/socet_aft_aftx07_0.4.0/sim-verilator/Vaftx07` to run the simulator (make sure you replace `<AFT-dev root>` the actual root directory of AFT-dev!)
   - Make sure your subroutine works properly before moving on!
 3. Fill in the `fp_mul` procedure in "source/fp.S"
 4. Compile the project using CMake
@@ -279,11 +279,12 @@ to follow the C ABI!
   - Run `<AFT-dev root>/aft_out/socet_aft_aftx07_0.4.0/sim-verilator/Vaftx07` to run the simulator
   - Make sure your subroutine works properly before moving on!
 5. Run the image processing code
+  - You'll be running some image processing code on `images/cat.pgm`, run `dolphin .` to open a file explorer to take a look at that image
   - Make sure you're in the `build` directory we created earlier
   - Run `make intro-socet` to compile your program
   - Run `riscv64-unknown-elf-objcopy -O binary intro-socet meminit.bin` to dump the ELF file to a raw binary file (if you ever need to recompile your code, run the previous command and this command again!)
   - Run `../scripts/generate_fs.sh` to generate the file system image for the project
-  - Run `<AFT-dev root>/aft_out/socet_aft_aftx07_0.4.0/sim-verilator/Vaftx07` to run the simulator
+  - Run `<AFT-dev root>/aft_out/socet_aft_aftx07_0.4.0/sim-verilator/Vaftx07` to run the simulator (be patient, it should take around 5-10 minutes to run)
 6. Dump the resulting file system and inspect the images:
   - Run `../scripts/dump_fs.sh` to dump the images from the file system image to the local directory
   - Run `dolphin .` to open a file explorer in the current directory

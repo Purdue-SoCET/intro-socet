@@ -7,7 +7,7 @@
 
 // Determines whether to use LOGSCALING when determining pixel values for FFT'd data. Uses log2 so
 // pretty computationally expensive.
-#define LOGSCALING 0
+#define LOGSCALING 1
 
 __attribute__((section(".noinit"))) cplx fft_data[FFT_N][FFT_N];
 
