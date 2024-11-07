@@ -1,5 +1,7 @@
 // fixed_point_t fp_add(fixed_point_t a, fixed_point_t b);
 // Takes in two fixed_point_t values (Q24.8) and returns their sum.
+// Remember that `a` will be passed in the `a0` register, and b will be passed
+// in the `a1` register. The result should be returned in the `a0` register.
 //
 // For a refresher on this algorithm, here's an example from the manual
 // (remember that we don't need to convert between decimal and fixed
@@ -16,6 +18,10 @@ fp_add:
 
 // fixed_point_t fp_mul(fixed_point_t a, fixed_point_t b);
 // Takes in two fixed_point_t values (Q24.8) and returns their product.
+// Remember that `a` will be passed in the `a0` register, and b will be passed
+// in the `a1` register. The result should be returned in the `a0` register.
+//
+// HINT: Take a look into the `mul`, `mulh`, and `srai` instructions!
 //
 // For a refresher on this algorithm, here's an example from the manual
 // (remember that we don't need to convert between decimal and fixed

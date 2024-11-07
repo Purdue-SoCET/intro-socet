@@ -19,7 +19,7 @@ about Verilator, GTKWave, or Makefiles.
 In this lab, you will be working with image processing code (THE IMAGE
 PROCESSING CODE IS PROVIDED). For a basic overview of image processing, please
 read the [document about the Fourier Transform](docs/ft.md) for a conceptual
-grounding on what you'll be doing in this lab.
+grounding on what's happening in the background of this lab.
 
 ---
 **NOTE**
@@ -254,8 +254,6 @@ Let's write a small python script to generate a header which will contain the ta
 4. Fill in lines 43 and 49 to convert the sine or cosine value to Q24.8 fixed point by multiplying by 1 << 8. Don't forget to cast this to an int!
 5. Run the script to generate the lookup table header by running `python3 scripts/generate_lookups.py`.
 
-[//]: # (TODO: fix up line numbers to be accurate to what's actually there)
-
 ### 3. Fixed Point
 
 The file "source/fp.S" contains some stub code for assembly procedures to
@@ -266,14 +264,27 @@ implement the algorithm. This function will be called from C code, so make sure
 to follow the C ABI!
 
 1. Fill in the `fp_add` procedure in "source/fp.S"
-2. Fill in the `fp_mul` procedure in "source/fp.S"
-3. Compile the project using CMake
+2. Compile the `fp_add` test using CMake
   - Run `mkdir build && cd build` to create a directory for the build files and enter it
   - Run `cmake3 ..` to generate build files using the CMake build system
-  - Run `make` to compile your program
+  - Run `make test-fp-add` to compile the test
+  - Run `riscv64-unknown-elf-objcopy -O binary test-fp-add meminit.bin` to dump the ELF file to a raw binary file (if you ever need to recompile your code, run the previous command and this command again!)
+  - Run `<AFT-dev root>/aft_out/socet_aft_aftx07_0.4.0/sim-verilator/Vaftx07` to run the simulator
+  - Make sure your subroutine works properly before moving on!
+3. Fill in the `fp_mul` procedure in "source/fp.S"
+4. Compile the project using CMake
+  - Make sure you're in the `build` directory we created earlier
+  - Run `make test-fp-mul` to compile the test
+  - Run `riscv64-unknown-elf-objcopy -O binary test-fp-mul meminit.bin` to dump the ELF file to a raw binary file (if you ever need to recompile your code, run the previous command and this command again!)
+  - Run `<AFT-dev root>/aft_out/socet_aft_aftx07_0.4.0/sim-verilator/Vaftx07` to run the simulator
+  - Make sure your subroutine works properly before moving on!
+5. Run the image processing code
+  - Make sure you're in the `build` directory we created earlier
+  - Run `make intro-socet` to compile your program
+  - Run `riscv64-unknown-elf-objcopy -O binary intro-socet meminit.bin` to dump the ELF file to a raw binary file (if you ever need to recompile your code, run the previous command and this command again!)
   - Run `../scripts/generate_fs.sh` to generate the file system image for the project
-4. Run the binary using AFT-dev
-5. Dump the resulting file system and inspect the images:
+  - Run `<AFT-dev root>/aft_out/socet_aft_aftx07_0.4.0/sim-verilator/Vaftx07` to run the simulator
+6. Dump the resulting file system and inspect the images:
   - Run `../scripts/dump_fs.sh` to dump the images from the file system image to the local directory
   - Run `dolphin .` to open a file explorer in the current directory
   - Double click on each PGM image to see it
@@ -284,10 +295,6 @@ fp_add:
     # TODO
     ret
 ```
-
-[//]: # (TODO: some instructions on running the code and dumping from the fs)
-
-[//]: # (TODO: should we have a small test program that prints out test values and results)
 
 [//]: # (TOOD: ### 3. Using DMA \(is this a good task?\))
 

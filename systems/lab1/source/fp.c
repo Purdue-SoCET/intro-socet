@@ -1,5 +1,5 @@
+#include "format.h"
 #include "fp.h"
-#include <stdio.h>
 
 fixed_point_t fp_from_u32(uint32_t a) {
     uint8_t frac = a & 0xFF;
@@ -68,7 +68,7 @@ fixed_point_t fp_log2(fixed_point_t a) {
 
     uint64_t z = x;
 
-    for (size_t i = 0; i < FP_FRAC_SIZE; i++) {
+    for (int i = 0; i < FP_FRAC_SIZE; i++) {
         z = z * z >> FP_FRAC_SIZE;
         if (z >= 2U << (uint64_t)FP_FRAC_SIZE) {
             z >>= 1;
@@ -88,4 +88,9 @@ fixed_point_t fp_max(fixed_point_t a, fixed_point_t b) {
     } else {
         return b;
     }
+}
+
+void fp_print(fixed_point_t a) {
+    uint32_t fraction = (a.frac * 1000 + 128) / 256;
+    print("%d.%d", a.whol, fraction);
 }

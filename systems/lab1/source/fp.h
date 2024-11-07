@@ -23,5 +23,6 @@ fixed_point_t fp_div_scalar(fixed_point_t a, uint32_t b);
 fixed_point_t fp_sqrt(fixed_point_t a);
 fixed_point_t fp_log2(fixed_point_t a);
 fixed_point_t fp_max(fixed_point_t a, fixed_point_t b);
+void fp_print(fixed_point_t a);
 
 #endif

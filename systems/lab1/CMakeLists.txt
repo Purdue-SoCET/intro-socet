@@ -60,6 +60,10 @@ set(FATFS_LIB_SRCS
     aft-femtokernel/fatfs-aft/source/ffunicode.c)
 set(MAIN_SRCS
     source/main.c ${SRCS} ${FEMTOKERNEL_SRCS} ${FATFS_LIB_SRCS})
+set(TEST_FP_ADD_SRCS
+    test/test_fp_add.c ${SRCS} ${FEMTOKERNEL_SRCS})
+set(TEST_FP_MUL_SRCS
+    test/test_fp_mul.c ${SRCS} ${FEMTOKERNEL_SRCS})
 
 add_executable(intro-socet ${MAIN_SRCS})
 set_property(TARGET intro-socet PROPERTY C_STANDARD_REQUIRED ON)
@@ -69,5 +73,27 @@ add_custom_command(
     POST_BUILD
     COMMAND riscv64-unknown-elf-objcopy -O binary intro-socet meminit.bin
     COMMAND riscv64-unknown-elf-objdump -d intro-socet > intro-socet.dump
-    COMMENT "Generating binary file and objdump"
+    COMMENT "Generating binary file and objdump for intro-socet"
+)
+
+add_executable(test-fp-add ${TEST_FP_ADD_SRCS})
+set_property(TARGET intro-socet PROPERTY C_STANDARD_REQUIRED ON)
+set_property(TARGET intro-socet PROPERTY C_STANDARD 11)
+add_custom_command(
+    TARGET test-fp-add
+    POST_BUILD
+    COMMAND riscv64-unknown-elf-objcopy -O binary test-fp-add meminit.bin
+    COMMAND riscv64-unknown-elf-objdump -d test-fp-add > test-fp-add.dump
+    COMMENT "Generating binary file and for test-fp-add"
+)
+
+add_executable(test-fp-mul ${TEST_FP_MUL_SRCS})
+set_property(TARGET intro-socet PROPERTY C_STANDARD_REQUIRED ON)
+set_property(TARGET intro-socet PROPERTY C_STANDARD 11)
+add_custom_command(
+    TARGET test-fp-mul
+    POST_BUILD
+    COMMAND riscv64-unknown-elf-objcopy -O binary test-fp-mul meminit.bin
+    COMMAND riscv64-unknown-elf-objdump -d test-fp-mul > test-fp-mul.dump
+    COMMENT "Generating binary file and objdump for test-fp-mul"
 )
