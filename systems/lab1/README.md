@@ -209,11 +209,12 @@ arithmetic right shifted by 1 would result in 0b00.
 To get started, clone the AFT-dev repository and follow its build instructions.
 If your account is set up properly, this should be as simple as:
 
-1. Run `git checkout mmio_disk` to switch to the `mmio_disk` branch which adds support for filesystems
-2. Set up the Python virtual environment according to the README.md
-3. Run `setup.sh` to download the needed libraries and submodules
-4. Run `build.sh` to build the Verilator simulation
-5. Run `./aft_out/socet_aft_aftx07_0.4.0/sim-verilator/Vaftx07` to run the
+1. Run `git clone git@github.com:Purdue-SoCET/AFT-dev.git` to clone the AFT-dev repo (if you can't run this, make sure you're in the SoCET GitHub organization)
+2. Run `git checkout mmio_disk` to switch to the `mmio_disk` branch which adds support for filesystems
+3. Set up the Python virtual environment according to the README.md
+4. Run `setup.sh` to download the needed libraries and submodules
+5. Run `build.sh` to build the Verilator simulation
+6. Run `./aft_out/socet_aft_aftx07_0.4.0/sim-verilator/Vaftx07` to run the
    simulator. This will simulate our RISC-V SoC and run the binary program from
    "./meminit.bin". This runs RISC-V machine code which is different from your
    host machine! It will dump the contents of memory to "./memsim.hex" at exit.
