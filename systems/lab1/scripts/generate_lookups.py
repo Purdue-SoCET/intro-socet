@@ -41,13 +41,13 @@ def main():
             val = # TODO
             sin_value = # TODO
             sin_fp = # TODO
-            f.write(f'    0x{sin_fp:x},\n')
+            f.write(f'    0x{s32(sin_fp):x},\n')
         f.write(midder)
         for k in range(0, n, 2):
             val = # TODO
             cos_value = # TODO
             cos_fp = # TODO
-            f.write(f'    0x{cos_fp:x},\n')
+            f.write(f'    0x{s32(cos_fp):x},\n')
         f.write(footer)
         f.flush()
 
