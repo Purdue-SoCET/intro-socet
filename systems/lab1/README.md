@@ -2,7 +2,7 @@
 ## Before Starting
 This lab is primarily a *software* lab, specifically about writing C and RISC-V assembly code. This document assumes some familiarity with C, but none with RISC-V. In this first section, we will introduce many of the instructions that you will use. However, the definitive instruction listing can be found at the [RISC-V Website](https://riscv.org/technical/specifications/).
 
-Before continuing, make sure that you are on version 2.3 of fusesoc. You can do so by typing "fusesoc --version". If it's below 2.3, make sure you're not in a virtual environment by typing "deactivate" and type in "pip3 --user fusesoc".
+Before continuing, make sure that you are on version 2.3 of fusesoc. You can do so by typing "fusesoc --version". If it's below 2.3, make sure you're not in a virtual environment by typing "deactivate" and type in "pip3 install --user fusesoc".
 
 ### Basics of RISC-V
 RISC-V is an open standard for an instruction set architecture (ISA). RISC-V has 32 general-purpose registers, and register 0 (x0, zero) is hard-wired to 0. The registers can be referred to as xN, for the Nth register, or by their [ABI Names](https://riscv.org/wp-content/uploads/2015/01/riscv-calling.pdf). For these examples, we will use the ABI names, since they are more descriptive and easier to read.
