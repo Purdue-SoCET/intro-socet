@@ -136,7 +136,8 @@ First, decide on the interface for your accelerator. How many control/status/dat
 1. Copy over your `popcnt.S` from the `lab1` folder to the `src` folder.
 2. Fill in `popcnt_hw` in `src/main.c`. This function wraps your accelerator driver to match the interface of the `popcnt` function (`uint8_t popcnt(uint32_t a)`).
 3. Create the build directory in your lab 2 directory using `mkdir build && cd build`, generate the build files using `cmake3 ..`, and build your files using `make`.
-4. Run AFT-dev and ensure that your accelerator properly works with `../../AFT-dev/aft_out/socet_aft_aftx07_2.0.0/sim-verilator/Vaftx07`.
+4. If you edited your .sv file at all, make sure to rebuild using build.sh in the top AFT-dev directory (/AFT-dev/).
+5. Run AFT-dev and ensure that your accelerator properly works with `../../AFT-dev/aft_out/socet_aft_aftx07_2.0.0/sim-verilator/Vaftx07`.
 
 **Instructions if you implemented a custom accelerator:**
 1. Change the `POPCNT_ACCELERATOR` macro in `src/main.c` to be 0.
