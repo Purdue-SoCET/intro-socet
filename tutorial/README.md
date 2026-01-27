@@ -29,12 +29,12 @@ There are three primary types of Verilog Modeling: Structural, Dataflow, and Beh
 ### Half Adder
 A full adder is a circuit that adds 2 bits together, and procudes a sum and carry-out bit. The truth table of a full adder is as follows. A and B are the input bits, Cin is the carry-in value, S is the sum, and Cout is the carry-out value.
 
-| **A** | **B** | **S** | **Cout** |
+| **A** | **B** |   | **S** | **Cout** |
 |:-----:|:-----:|:-:|:-----:|:--------:|
-|   0   |   0   |   0   |     0    |
-|   0   |   1   |   1   |     0    |
-|   1   |   0   |   1   |     0    |
-|   1   |   1   |   0   |     1    |
+|   0   |   0   |   |   0   |     0    |
+|   0   |   1   |   |   1   |     0    |
+|   1   |   0   |   |   1   |     0    |
+|   1   |   1   |   |   0   |     1    |
 
 
 ## Lab Tasks
