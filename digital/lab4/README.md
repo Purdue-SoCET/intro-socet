@@ -1,4 +1,4 @@
-# Digital Design Lab 3
+# Digital Design Lab 4
 
 ## Memory Copier
 This lab will have you practice designing your own sequential machine, specifically a finite state machine (FSM), that controls the flow of data in a memory system. **You will reuse this code in lab 4**, where you will integrate your controller into a complete system using verilog interfaces.
