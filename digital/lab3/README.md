@@ -45,7 +45,7 @@ Inputs:
 - `src_addr` - an address to *read* data from given to your controller externally
 - `dst_addr` - the address to *write* data to given to your controller externally
 - `copy_size` - how many bytes to copy
-- `mem_ready` - a signal from the memory that the data is ready to be read
+- `mem_ready` - a signal from the memory that the data is available at the rdata output port (instantaneous)
 - `mem_rdata` - the data readable from memory
   
 Outputs:
